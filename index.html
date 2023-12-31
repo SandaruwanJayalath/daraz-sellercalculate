@@ -131,7 +131,7 @@ button:hover {
 <img src="https://logos-world.net/wp-content/uploads/2022/05/Daraz-Logo.png" alt="Daraz Logo" class="logo">
 
 <div class="container">
-	<h1>Daraz Product Calculator</h1>
+	<h1> Welcome 2424 Daraz Product Calculator</h1>
 	<!-- Rest of the code... -->
 </div>
 
@@ -172,7 +172,7 @@ button:hover {
   let commission = productPrice * commissionRate / 100;
   let paymentFee = productPrice * 2.5 / 100;
   let total = commission + paymentFee;
-  let vat = total * 15 / 100;
+  let vat = total * 18 / 100;
   let finalPrice = productPrice - (total + vat);
   let salePrice = productPrice + total + vat; // add this line
 
@@ -180,7 +180,7 @@ button:hover {
   resultContainer.innerHTML = `Commission: ${commission.toFixed(2)}<br>
                                 Payment Fee: ${paymentFee.toFixed(2)}<br>
                                 Total: ${total.toFixed(2)}<br>
-                                VAT (15%): ${vat.toFixed(2)}<br>
+                                VAT (18%): ${vat.toFixed(2)}<br>
                                 If you sell at the entered price, this will be your final price: ${finalPrice.toFixed(2)}<br>
                                 Sell your item at this price and you can get the entered price: ${salePrice.toFixed(2)}`; //  feedback add line modify 
 }
