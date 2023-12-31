@@ -172,7 +172,7 @@ button:hover {
   let commission = productPrice * commissionRate / 100;
   let paymentFee = productPrice * 2.5 / 100;
   let total = commission + paymentFee;
-  let vat = total * 18 / 100;
+  let vat = total * 15 / 100;
   let finalPrice = productPrice - (total + vat);
   let salePrice = productPrice + total + vat; // add this line
 
