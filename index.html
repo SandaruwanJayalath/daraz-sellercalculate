@@ -1,31 +1,234 @@
-<!DOCTYPE html>
-<html lang="en">
+﻿<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 Not Found</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: rgb(244, 244, 244); /* Light gray */
-            color: rgb(51, 51, 51); /* Dark gray */
-            margin: 0;
-            padding: 0;
-        }
+	<title>DARAZ Product Calculator</title>
+	 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        h1 {
-            color: rgb(255, 0, 0); /* Red */
-        }
-
-        p {
-            font-size: 18px;
-            line-height: 1.6;
-        }
-    </style>
-</head>
+   
 <body>
-    <h1>404 Not Found</h1>
-    <p>We regret to inform you that this website is no longer being updated as we are no longer affiliated with Daraz. Unfortunately, this means we are unable to view important information such as commission details, tax information, seller fees, and other essential data. We apologize for any inconvenience this may cause. However, we are pleased to announce that we have launched our own website.</p>
-        <p><H2>No Fake Return, No Pain</H2>.</p>
+<style>
+	 /* Styles for all devices */
+    h1 {
+      color: blue;
+    }
+
+    /* Styles for mobile devices */
+    @media only screen and (max-width: 600px) {
+      h1 {
+        color: red;
+        font-size: 18px;
+      }
+    }
+body {
+  font-family: Arial, sans-serif;
+  background-color: rgb(78, 205, 196);
+  padding: 20px;
+}
+
+.logo {
+			position: absolute;
+			top: 80px;
+			left: 10px;
+			width: 100px;
+			height: auto;
+		}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+}
+
+h1 {
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+  
+}
+
+input[type="number"] {
+  border: none;
+  border-bottom: 2px solid #333;
+  font-size: 16px;
+  padding: 5px 10px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+  width: 100%;
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #444;
+}
+
+.result {
+  margin-top: 20px;
+  border-top: 2px solid #333;
+  padding-top: 20px;
+}
+
+.result h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+.result p {
+  margin-bottom: 5px;
+  color: #555;
+  font-size: 16px;
+}
+
+.result p span {
+  color: #333;
+  font-weight: bold;
+}
+
+.footer {
+  margin-top: 20px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
+
+.footer a {
+  color: #888;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  color: #333;
+}
+</style>
+<div style="background-color: #FF4500; padding: 10px; text-align: center;">
+	<a href="javascript:void(0)" style="color: #fff; font-size: 18px; text-decoration: none;" onclick="openInNewTab('https://university.daraz.lk/course/learn?id=1125&type=policies&login=skip')">ඔබට කමිශන් සෝයා ගැනිමට නොහැකි නම් මෙය ක්ලික් කරන්න</a>
+</div>
+<img src="https://logos-world.net/wp-content/uploads/2022/05/Daraz-Logo.png" alt="Daraz Logo" class="logo">
+
+<div class="container">
+	<h1> Welcome 2424 Daraz Product Calculator</h1>
+	<!-- Rest of the code... -->
+</div>
+
+<!-- Rest of the code... -->
+
+<script>
+	function openInNewTab(url) {
+		var win = window.open();
+		win.opener = null;
+		win.location = url;
+	}
+</script>
+
+<centre>
+
+	<label for="product-price">Product Price:</label>
+	<input type="number" id="product-price"><br><br>
+	<label for="commission-rate">Commission Rate:</label></centre>
+	<input type="number" id="commission-rate"><br><br>
+	<button onclick="calculate()">Calculate</button>
+	<button onclick="clearData()">Clear</button><br><br>
+	<div id="result-container"></div>
+	<p id="error-message" style="color:red; display:none;">Huttho Hariyata Gahapan Mata owa hadanna Ba</p>
+
+	<script>
+		function calculate() {
+  let productPrice = Number(document.getElementById("product-price").value);
+  let commissionRate = Number(document.getElementById("commission-rate").value);
+
+  if (isNaN(productPrice) || isNaN(commissionRate)) {
+    document.getElementById("error-message").style.display = "block";
+    document.getElementById("result-container").innerHTML = "";
+    return;
+  }
+
+  document.getElementById("error-message").style.display = "none";
+
+  let commission = productPrice * commissionRate / 100;
+  let paymentFee = productPrice * 2.5 / 100;
+  let total = commission + paymentFee;
+  let vat = total * 18 / 100;
+  let finalPrice = productPrice - (total + vat);
+  let salePrice = productPrice + total + vat; // add this line
+
+  let resultContainer = document.getElementById("result-container");
+  resultContainer.innerHTML = `Commission: ${commission.toFixed(2)}<br>
+                                Payment Fee: ${paymentFee.toFixed(2)}<br>
+                                Total: ${total.toFixed(2)}<br>
+                                2024 ක්‍රියාත්මක VAT (18%): ${vat.toFixed(2)}<br>
+                                If you sell at the entered price, this will be your final price: ${finalPrice.toFixed(2)}<br>
+                                Sell your item at this price and you can get the entered price: ${salePrice.toFixed(2)}`; //  feedback add line modify 
+}
+
+		function clearData() {
+			document.getElementById("product-price").value = "";
+			document.getElementById("commission-rate").value = "";
+			document.getElementById("result-container").innerHTML = "";
+			document.getElementById("error-message").style.display = "none";
+		}
+	</script>
+    <div class="contact-form">
+	<div style="background-color: #FF4500; padding: 10px; text-align: center;">
+	<a href="fb://group/238540771380220" style="color: #fff; font-size: 18px; text-decoration: none;" onclick="openFacebookApp('fb://group/238540771380220', 'https://www.facebook.com/groups/238540771380220/?ref=share&mibextid=NSMWBT')">
+		<i class="fab fa-facebook"></i> Join Our Facebook Group
+	</a>
+</div>
+<script>
+	function openFacebookApp(urlScheme, fallbackUrl) {
+		window.location.href = urlScheme;
+
+		setTimeout(function() {
+			window.location.href = fallbackUrl;
+		}, 1000); // Fallback in case the Facebook app is not installed or supported
+	}
+</script>
+  <h3>Contact Me</h3>
+  <form action="mailto:wosjayalath@gmail.com" method="post" enctype="text/plain">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    <label for="message">Message:</label>
+    <textarea id="message" name="message" rows="5" required></textarea>
+    <button type="submit">Send</button>
+  </form>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <p>&copy; 2023 Sandaruwan Jayalath. All rights reserved.</p>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>
