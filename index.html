@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -129,23 +127,21 @@
     <div style="background-color: #FF4500; padding: 10px; text-align: center;">
         <a href="javascript:void(0)" style="color: #fff; font-size: 18px; text-decoration: none;" onclick="openInNewTab('https://university.daraz.lk/course/learn?id=1125&type=policies&login=skip')">ඔබට කමිශන් සෝයා ගැනිමට නොහැකි නම් මෙය ක්ලික් කරන්න</a>
     </div>
-    <img src="https://images.app.goo.gl/m1pRGCnEEPZksd7k6" alt="Daraz Logo" class="logo">
+    <img src="https://web.facebook.com/photo/?fbid=3706996912848863&set=a.1391770164371561" alt="Daraz Logo" class="logo">
 
     <div class="container">
         <h1> Welcome 2024 Sandaruwan Product Calculator</h1>
         <label for="product-price">Product Price:</label>
-        <input type="number" id="product-price"><br><br>
+        <input type="number" id="product-price" placeholder="Enter product price"><br><br>
         <label for="commission-rate">Commission Rate:</label>
-        <input type="number" id="commission-rate"><br><br>
+        <input type="number" id="commission-rate" placeholder="Enter commission rate"><br><br>
         <button onclick="calculate()">Calculate</button>
         <button onclick="clearData()">Clear</button><br><br>
         <div id="result-container"></div>
-        <p id="error-message" style="color:red; display:none;">Huttho Hariyata Gahapan Mata owa hadanna Ba</p>
+        <p id="error-message" style="color:red; display:none;">Please enter valid numbers for both fields.</p>
     </div>
 
-    <audio id="audio" src="https://rr4---sn-qp5avb5mp5u5-jhcd.googlevideo.com/videoplayback?expire=1718567145&ei=iexuZrSZKpLSi9oPz8SdiAw&ip=23.88.68.133&id=o-AF2NxXxDgz3HARknShw7q8oH_v6GYdNX4f5kEOtoXY2M&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&bui=AbKP-1OE-R_vaQMTvYfmJkDc5MLgw9sB1CDFskLkf1dQkNnD1iMG9vF5rw4_U9aJkdG_i19doPUKEuqo&vprv=1&mime=audio%2Fmp4&rqh=1&gir=yes&clen=49280&dur=2.995&lmt=1709127388394735&keepalive=yes&c=MEDIA_CONNECT_FRONTEND&txp=4532434&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cvprv%2Cmime%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AJfQdSswRAIgWTCfOAPn0Y-yGWBE3DsT-UvggWraI4cPJ_7tJikeS68CIACpeACreWQQMB59dLf810Tr37XSk2F_EwAJIxjZxBH8&redirect_counter=1&rm=sn-4g5ekd7l&fexp=24350485&req_id=cbd2864811e0a3ee&cms_redirect=yes&cmsv=e&ipbypass=yes&mh=HK&mip=2402:4000:b19a:f9f2:1:0:7cac:d0ca&mm=31&mn=sn-qp5avb5mp5u5-jhcd&ms=au&mt=1718545303&mv=u&mvi=4&pl=48&lsparams=ipbypass,mh,mip,mm,mn,ms,mv,mvi,pl&lsig=AHlkHjAwRQIgFJ7BXDmlO6lLI-SagVBLaVSjmXHrQegyi1tdMNFqgIkCIQDcx7W3vFonTqcBB1qK5Rgs6vuVoAZYn9fQoBxTW4vwvw%3D%3D"></audio> <!-- Replace with your audio file link -->
-
-    <script>
+   <script>
         function openInNewTab(url) {
             var win = window.open();
             win.opener = null;
@@ -155,9 +151,8 @@
         function calculate() {
             let productPrice = Number(document.getElementById("product-price").value);
             let commissionRate = Number(document.getElementById("commission-rate").value);
-            let audio = document.getElementById("audio");
 
-            if (isNaN(productPrice) || isNaN(commissionRate)) {
+            if (isNaN(productPrice) || isNaN(commissionRate) || productPrice <= 0 || commissionRate <= 0) {
                 document.getElementById("error-message").style.display = "block";
                 document.getElementById("result-container").innerHTML = "";
                 return;
@@ -167,21 +162,34 @@
 
             let commission = productPrice * commissionRate / 100;
             let paymentFee = productPrice * 3 / 100;
-            let total = commission + paymentFee;
+            let handlingFee = 0;
+
+            // Calculate Handling Fee based on the price ranges
+            if (productPrice >= 0 && productPrice <= 1000) {
+                handlingFee = 15;
+            } else if (productPrice >= 1001 && productPrice <= 1700) {
+                handlingFee = 20;
+            } else if (productPrice >= 1701 && productPrice <= 3000) {
+                handlingFee = 25;
+            } else if (productPrice > 3000) {
+                handlingFee = 30;
+            }
+
+            let total = commission + paymentFee + handlingFee;
             let vat = total * 18 / 100;
             let finalPrice = productPrice - (total + vat);
             let salePrice = productPrice + total + vat;
 
             let resultContainer = document.getElementById("result-container");
-            resultContainer.innerHTML = `Commission: ${commission.toFixed(2)}<br>
-                                       2024 අගොස්තු මස 1 දින සිට ක්‍රියාත්මක Payment Fee: ${paymentFee.toFixed(2)}<br>
-                                         Total: ${total.toFixed(2)}<br>
-                                         2024 ක්‍රියාත්මක VAT (18%): ${vat.toFixed(2)}<br>
-                                         If you sell at the entered price, this will be your final price: ${finalPrice.toFixed(2)}<br>
-                                         Sell your item at this price and you can get the entered price: ${salePrice.toFixed(2)}`;
-
-        <p>තවමත් Handing feee යොදා නැත. දැනුම් දුන් පසු ඇතුලත් කරනු ලැබේ</p>
-            audio.play(); // Play the audio
+            resultContainer.innerHTML = `
+                Commission: ${commission.toFixed(2)}<br>
+                Payment Fee effective from August 1, 2024: ${paymentFee.toFixed(2)}<br>
+                Handling Fee: ${handlingFee.toFixed(2)}<br>
+                Total: ${total.toFixed(2)}<br>
+                18% VAT: ${vat.toFixed(2)}<br>
+                Final Price (after deductions): ${finalPrice.toFixed(2)}<br>
+                Sell at this price, and you can get the entered price: ${salePrice.toFixed(2)}
+            `;
         }
 
         function clearData() {
@@ -191,33 +199,7 @@
             document.getElementById("error-message").style.display = "none";
         }
     </script>
-
-    <div class="contact-form">
-        <div style="background-color: #FF4500; padding: 10px; text-align: center;">
-            <a href="fb://group/238540771380220" style="color: #fff; font-size: 18px; text-decoration: none;" onclick="openFacebookApp('fb://group/238540771380220', 'https://www.facebook.com/groups/238540771380220/?ref=share&mibextid=NSMWBT')">
-                <i class="fab fa-facebook"></i> Join Our Facebook Group
-            </a>
-        </div>
-        <h3>Contact Me</h3>
-        <form action="mailto:wosjayalath@gmail.com" method="post" enctype="text/plain">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" rows="5" required></textarea>
-            <button type="submit">Send</button>
-        </form>
-    </div>
-
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <p>&copy; 2024 Sandaruwan Jayalath. All rights reserved.හො.ම.ත.ග.යු කොපි කරොත් මොකුත් කරන්නෑ 👍 </p>
-                </div>
-            </div>
-        </div>
-    </footer>
+    
+  <p>Sandaruwan Jayalath<p/>
 </body>
 </html>
