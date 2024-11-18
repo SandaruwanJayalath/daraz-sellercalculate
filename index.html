@@ -130,17 +130,6 @@
       opacity: 1;
       transform: translateY(0);
     }
-
-    #advanced-calculator {
-      display: none;
-      margin-top: 20px;
-      border-top: 2px solid #333;
-      padding-top: 20px;
-    }
-
-    #advanced-calculator div {
-      margin-bottom: 10px;
-    }
   </style>
 </head>
 
@@ -155,43 +144,17 @@
   <div class="container">
     <h1>Welcome 2024 Sandaruwan Product Calculator</h1>
     <label for="product-price">Product Price:</label>
-    <input type="number" id="product-price" placeholder="Enter product price" oninput="calculate()" min="0">
+    <input type="number" id="product-price" placeholder="Enter product price" min="0">
     <label for="commission-rate">Commission Rate:</label>
-    <input type="number" id="commission-rate" placeholder="Enter commission rate" oninput="calculate()" min="0">
+    <input type="number" id="commission-rate" placeholder="Enter commission rate" min="0">
+    <label for="wholesale-price">Wholesale Price:</label>
+    <input type="number" id="wholesale-price" placeholder="Enter wholesale price" min="0">
+    <label for="profit-percentage">Profit Percentage:</label>
+    <input type="number" id="profit-percentage" placeholder="Enter profit percentage" min="0" value="0">
     <button onclick="calculate()">Calculate</button>
     <button onclick="clearData()">Clear</button>
     <div id="result-container"></div>
     <p id="error-message" class="error-message">Please enter valid numbers for both fields.</p>
-
-    <div id="advanced-calculator">
-      <h2>Advanced Calculator</h2>
-
-      <div>
-        <label for="profit-percentage">Profit Percentage:</label>
-        <input type="number" id="profit-percentage" min="0" oninput="updateCalculatedPrice()">
-      </div>
-
-      <div>
-        <label for="item-count">Item Count:</label>
-        <input type="number" id="item-count" min="1" oninput="updateCalculatedPrice()">
-      </div>
-
-      <div>
-        <h3>Choose Selling Price:</h3>
-        <label>
-          <input type="radio" name="selling-price" value="final-price" checked onchange="updateCalculatedPrice()">
-          Final Price (LKR <span id="final-price-value"></span>)
-        </label>
-        <label>
-          <input type="radio" name="selling-price" value="sale-price" onchange="updateCalculatedPrice()">
-          Sell at this price to get the entered price (LKR <span id="sale-price-value"></span>)
-        </label>
-      </div>
-
-      <button onclick="calculateAdvanced()">Calculate Advanced Price</button>
-
-      <div id="advanced-result"></div>
-    </div>
   </div>
 
   <script>
@@ -204,8 +167,10 @@
     function calculate() {
       let productPrice = Number(document.getElementById("product-price").value);
       let commissionRate = Number(document.getElementById("commission-rate").value);
+      let wholesalePrice = Number(document.getElementById("wholesale-price").value);
+      let profitPercentage = Number(document.getElementById("profit-percentage").value);
 
-      if (isNaN(productPrice) || isNaN(commissionRate) || productPrice <= 0 || commissionRate <= 0) {
+      if (isNaN(productPrice) || isNaN(commissionRate) || productPrice <= 0 || commissionRate <= 0 || isNaN(wholesalePrice)) {
         document.getElementById("error-message").style.display = "block";
         document.getElementById("result-container").innerHTML = "";
         return;
@@ -231,6 +196,9 @@
       let vat = total * 18 / 100;
       let finalPrice = productPrice - (total + vat);
       let salePrice = productPrice + total + vat;
+
+      // Calculate wholesale profit
+      let wholesaleProfit = wholesalePrice * profitPercentage / 100;
 
       let resultContainer = document.getElementById("result-container");
       resultContainer.innerHTML = `
@@ -268,6 +236,14 @@
                             <td>Sell at this price to get the entered price</td>
                             <td>${salePrice.toFixed(2)}</td>
                         </tr>
+                        <tr class="result-item">
+                            <td><b>Final Price with wholesale profit (after deductions)</b></td>
+                            <td><b>${wholesalePrice > 0 && profitPercentage > 0 ? (finalPrice + wholesaleProfit).toFixed(2) : "Can't Calculate"}</b></td>
+                        </tr>
+                        <tr class="result-item">
+                            <td><b>Sell at this price to get the entered price with wholesale profit</b></td>
+                            <td><b>${wholesalePrice > 0 && profitPercentage > 0 ? (salePrice + wholesaleProfit).toFixed(2) : "Can't Calculate"}</b></td>
+                        </tr>
                     </table>
                 </div>
             `;
@@ -278,73 +254,15 @@
           item.classList.add("show");
         }, 300 * index);
       });
-
-      // Show the advanced calculator and update values
-      document.getElementById("advanced-calculator").style.display = "block";
-      document.getElementById("final-price-value").textContent = finalPrice.toFixed(2);
-      document.getElementById("sale-price-value").textContent = salePrice.toFixed(2);
-
-      // Update calculated price
-      updateCalculatedPrice();
-    }
-
-    function updateCalculatedPrice() {
-      let productPrice = Number(document.getElementById("product-price").value);
-      let commissionRate = Number(document.getElementById("commission-rate").value);
-      let handlingFee = 0;
-
-      if (productPrice >= 0 && productPrice <= 1000) {
-        handlingFee = 15;
-      } else if (productPrice >= 1001 && productPrice <= 1700) {
-        handlingFee = 20;
-      } else if (productPrice >= 1701 && productPrice <= 3000) {
-        handlingFee = 25;
-      } else if (productPrice > 3000) {
-        handlingFee = 30;
-      }
-
-      let salePrice = productPrice +
-        productPrice * commissionRate / 100 +
-        productPrice * 3 / 100 +
-        handlingFee;
-
-      let profitPercentage = Number(document.getElementById("profit-percentage").value) || 0;
-      let itemCount = Number(document.getElementById("item-count").value) || 1;
-      let selectedValue = document.querySelector('input[name="selling-price"]:checked').value === "final-price" ?
-        Number(document.getElementById("final-price-value").textContent) :
-        salePrice;
-
-      let calculatedPrice = calculateAdvancedPrice(selectedValue, profitPercentage, itemCount);
-      document.getElementById("calculated-price-value").textContent = calculatedPrice.toFixed(2);
-    }
-
-    function calculateAdvancedPrice(selectedValue, profitPercentage, itemCount) {
-      let f = selectedValue * profitPercentage / 100;
-      let newPrice = f - selectedValue * itemCount;
-      return newPrice;
-    }
-
-    function calculateAdvanced() {
-      let profitPercentage = Number(document.getElementById("profit-percentage").value) || 0;
-      let itemCount = Number(document.getElementById("item-count").value) || 1;
-      let selectedValue = document.querySelector('input[name="selling-price"]:checked').value === "final-price" ?
-        Number(document.getElementById("final-price-value").textContent) :
-        Number(document.getElementById("sale-price-value").textContent);
-
-      let finalAdvancedPrice = calculateAdvancedPrice(selectedValue, profitPercentage, itemCount);
-
-      document.getElementById("advanced-result").innerHTML = `
-                <h3>Final Advanced Price: LKR ${finalAdvancedPrice.toFixed(2)}</h3>
-            `;
     }
 
     function clearData() {
       document.getElementById("product-price").value = "";
       document.getElementById("commission-rate").value = "";
+      document.getElementById("wholesale-price").value = "";
+      document.getElementById("profit-percentage").value = "0";
       document.getElementById("result-container").innerHTML = "";
       document.getElementById("error-message").style.display = "none";
-      document.getElementById("advanced-calculator").style.display = "none";
-      document.getElementById("advanced-result").innerHTML = "";
     }
   </script>
 
